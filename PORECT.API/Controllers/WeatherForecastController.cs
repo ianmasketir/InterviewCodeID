@@ -1,10 +1,12 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace PORECT.API.Controllers
 {
+    [AllowAnonymous]
     [ApiController]
     [Route("[controller]")]
-    public class WeatherForecastController : ControllerBase
+    public class WeatherForecastController : ParentController
     {
         private static readonly string[] Summaries = new[]
         {

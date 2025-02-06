@@ -59,11 +59,13 @@ namespace PORECT.Helper
                 ConfigDev = configuration.GetSection("Dev").Get<Cfg_Dev>();
                 ConfigProd = configuration.GetSection("PROD").Get<Cfg_Prod>();
                 ConfigAPI = configuration.GetSection("API").Get<Cfg_API>();
+                ConfigJwt = configuration.GetSection("Jwt").Get<Cfg_Jwt>();
             }
 
             public string Environment { get; set; }
             public Cfg_Dev ConfigDev { get; set; }
             public Cfg_Prod ConfigProd { get; set; }
+            public Cfg_Jwt ConfigJwt { get; set; }
             public Cfg_API ConfigAPI { get; set; }
 
             public class Cfg_Dev
@@ -74,6 +76,11 @@ namespace PORECT.Helper
             {
                 public string connection { get; set; }
             }
+            public class Cfg_Jwt
+            {
+                public string Username { get; set; }
+                public string Password { get; set; }
+            }
             public class Cfg_BaseAPI
             {
                 public string BaseUrl { get; set; }
@@ -81,16 +88,25 @@ namespace PORECT.Helper
             }
             public class Cfg_API
             {
+                public Cfg_APIAuth Auth { get; set; }
                 public Cfg_APIUser User { get; set; }
                 public Cfg_APIProduct Product { get; set; }
             }
+            public class Cfg_APIAuth
+            {
+                public string BaseUrl { get; set; }
+                public Cfg_BaseAPI GenerateKey { get; set; }
+                public Cfg_BaseAPI Login { get; set; }
+            }
             public class Cfg_APIUser
             {
+                public string BaseUrl { get; set; }
                 public Cfg_BaseAPI List { get; set; }
                 public Cfg_BaseAPI Submit { get; set; }
             }
             public class Cfg_APIProduct
             {
+                public string BaseUrl { get; set; }
                 public Cfg_BaseAPI List { get; set; }
                 public Cfg_BaseAPI Submit { get; set; }
             }

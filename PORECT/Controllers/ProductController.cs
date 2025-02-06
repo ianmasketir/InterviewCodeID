@@ -22,8 +22,17 @@ namespace PORECT.Controllers
                     return RedirectToAction("Login", "Login");
                 }
 
-                var data = _api.Get<List<ProductResponse>>(new(), AppConfig.Config.ConfigAPI.Product.List.BaseUrl, AppConfig.Config.ConfigAPI.Product.List.Endpoint,
-                    AppConfig.Config.ConfigAPI.Product.List.BaseUrl.Split('/')[0] == "https:");
+                ReturnToken jwtToken = GenerateJwtToken();
+                List<ParamTaskViewModel> listParamHeader = new List<ParamTaskViewModel>
+                {
+                    new ParamTaskViewModel
+                    {
+                        colName = "Authorization",
+                        value = string.Concat("Bearer ", jwtToken.Token)
+                    }
+                };
+                var data = _api.Get<List<ProductResponse>>(new(), AppConfig.Config.ConfigAPI.Product.BaseUrl, AppConfig.Config.ConfigAPI.Product.List.Endpoint,
+                    AppConfig.Config.ConfigAPI.Product.BaseUrl.Split('/')[0] == "https:", listParamHeader);
                 return View(data);
             }
             catch (Exception ex)
@@ -42,6 +51,15 @@ namespace PORECT.Controllers
                     return RedirectToAction("Login", "Login");
                 }
 
+                ReturnToken jwtToken = GenerateJwtToken();
+                List<ParamTaskViewModel> listParamHeader = new List<ParamTaskViewModel>
+                {
+                    new ParamTaskViewModel
+                    {
+                        colName = "Authorization",
+                        value = string.Concat("Bearer ", jwtToken.Token)
+                    }
+                };
                 var param = new List<ParamTaskViewModel>
                 {
                     new ParamTaskViewModel
@@ -50,8 +68,8 @@ namespace PORECT.Controllers
                         value = (data.ID ?? -1).ToString()
                     }
                 };
-                var list = _api.Get<List<ProductResponse>>(param, AppConfig.Config.ConfigAPI.Product.List.BaseUrl, AppConfig.Config.ConfigAPI.Product.List.Endpoint,
-                    AppConfig.Config.ConfigAPI.Product.List.BaseUrl.Split('/')[0] == "https:");
+                var list = _api.Get<List<ProductResponse>>(param, AppConfig.Config.ConfigAPI.Product.BaseUrl, AppConfig.Config.ConfigAPI.Product.List.Endpoint,
+                    AppConfig.Config.ConfigAPI.Product.BaseUrl.Split('/')[0] == "https:", listParamHeader);
                 ProductViewModel model = new ProductViewModel
                 {
                     FormMode = data.FormMode,
@@ -98,9 +116,18 @@ namespace PORECT.Controllers
                 }
                 model.CreatedBy = username;
 
+                ReturnToken jwtToken = GenerateJwtToken();
+                List<ParamTaskViewModel> listParamHeader = new List<ParamTaskViewModel>
+                {
+                    new ParamTaskViewModel
+                    {
+                        colName = "Authorization",
+                        value = string.Concat("Bearer ", jwtToken.Token)
+                    }
+                };
                 string json = JsonConvert.SerializeObject(model);
-                string result = _api.PostString(json, AppConfig.Config.ConfigAPI.Product.Submit.BaseUrl, AppConfig.Config.ConfigAPI.Product.Submit.Endpoint, default, false,
-                    AppConfig.Config.ConfigAPI.Product.Submit.BaseUrl.Split('/')[0] == "https:");
+                string result = _api.PostString(json, AppConfig.Config.ConfigAPI.Product.BaseUrl, AppConfig.Config.ConfigAPI.Product.Submit.Endpoint, default, false,
+                    AppConfig.Config.ConfigAPI.Product.BaseUrl.Split('/')[0] == "https:", listParamHeader);
                 if (!string.IsNullOrEmpty(result))
                     response = JsonConvert.DeserializeObject<TransactionResponse>(result);
                 else

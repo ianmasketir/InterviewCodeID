@@ -8,7 +8,7 @@ namespace PORECT.Helper
 {
     public class ReturnToken
     {
-        public string token { get; set; }
+        public string Token { get; set; }
     }
     public class ParamTaskViewModel
     {

@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using PORECT.Helper;
-using System.Security.Cryptography;
 using Tes.Domain;
 
 namespace PORECT.Controllers
@@ -47,9 +46,19 @@ namespace PORECT.Controllers
                     response.Message = "Please check your input";
                     return Json(response);
                 }
+
+                ReturnToken jwtToken = GenerateJwtToken();
+                List<ParamTaskViewModel> listParamHeader = new List<ParamTaskViewModel>
+                {
+                    new ParamTaskViewModel
+                    {
+                        colName = "Authorization",
+                        value = string.Concat("Bearer ", jwtToken.Token)
+                    }
+                };
                 string json = JsonConvert.SerializeObject(model);
-                string result = _api.PostString(json, AppConfig.Config.ConfigAPI.User.Submit.BaseUrl, AppConfig.Config.ConfigAPI.User.Submit.Endpoint, default, false,
-                    AppConfig.Config.ConfigAPI.User.Submit.BaseUrl.Split('/')[0] == "https:");
+                string result = _api.PostString(json, AppConfig.Config.ConfigAPI.User.BaseUrl, AppConfig.Config.ConfigAPI.User.Submit.Endpoint, default, false,
+                    AppConfig.Config.ConfigAPI.User.BaseUrl.Split('/')[0] == "https:", listParamHeader);
                 if (!string.IsNullOrEmpty(result))
                     response = JsonConvert.DeserializeObject<TransactionResponse>(result);
                 else
@@ -87,10 +96,15 @@ namespace PORECT.Controllers
 
                 if (!string.IsNullOrEmpty(username) && !string.IsNullOrEmpty(password))
                 {
-                    //Check username
-                    //var isfoundUsername = _repository.sp_list_user().FirstOrDefault(x =>
-                    //                        !string.IsNullOrEmpty(x.Username) &&
-                    //                        x.Username.ToLower() == username.ToLower());
+                    ReturnToken jwtToken = GenerateJwtToken();
+                    List<ParamTaskViewModel> listParamHeader = new List<ParamTaskViewModel>
+                    {
+                        new ParamTaskViewModel
+                        {
+                            colName = "Authorization",
+                            value = string.Concat("Bearer ", jwtToken.Token)
+                        }
+                    };
                     var param = new List<ParamTaskViewModel>
                     {
                         new ParamTaskViewModel
@@ -99,8 +113,8 @@ namespace PORECT.Controllers
                             value = username
                         }
                     };
-                    var isfoundUsername = _api.Get<List<Tes.Domain.MsUserResponse>>(param, AppConfig.Config.ConfigAPI.User.List.BaseUrl, AppConfig.Config.ConfigAPI.User.List.Endpoint,
-                        AppConfig.Config.ConfigAPI.User.List.BaseUrl.Split('/')[0] == "https:").FirstOrDefault();
+                    var isfoundUsername = _api.Get<List<Tes.Domain.MsUserResponse>>(param, AppConfig.Config.ConfigAPI.User.BaseUrl, AppConfig.Config.ConfigAPI.User.List.Endpoint,
+                        AppConfig.Config.ConfigAPI.User.BaseUrl.Split('/')[0] == "https:", listParamHeader).OrderByDescending(x => x.CreatedDtm).FirstOrDefault();
                     if (isfoundUsername != null)
                     {
                         if (isfoundUsername.IsActive == true)

@@ -10,7 +10,6 @@ namespace PORECT.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [EnableCors("corsapp")]
     public class UserController : ParentController
     {
         #region View
