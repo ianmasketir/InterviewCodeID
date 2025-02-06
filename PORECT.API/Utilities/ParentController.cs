@@ -10,11 +10,15 @@ namespace PORECT.API
     [EnableCors("corsapp")]
     public class ParentController : Controller
     {
-        protected readonly PORECTLog logger = new PORECTLog();
-        protected readonly TesProcessor _processor = new TesProcessor();
+        protected readonly PORECTLog logger;
+        //protected readonly ITesRepository _repository;
 
-        public ParentController()
+        public ParentController(IServiceProvider? serviceProvider = null)
         {
+            if(serviceProvider != null)
+            {
+                //this._repository = serviceProvider.GetService<ITesRepository>();
+            }
         }
 
     }

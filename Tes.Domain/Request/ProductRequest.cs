@@ -17,4 +17,13 @@ namespace Tes.Domain
         public string? CreatedBy { get; set; }
         public DateTime? CreatedDtm { get; set; }
     }
+
+    public class SearchProductRequest
+    {
+        public int? ID { get; set; }
+        public string? Code { get; set; }
+        public string? Name { get; set; }
+        public decimal? PriceFrom { get; set; }
+        public decimal? PriceTo { get; set; }
+    }
 }

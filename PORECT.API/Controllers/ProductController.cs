@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
+using Tes.Business;
 using Tes.Domain;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -10,18 +11,24 @@ namespace PORECT.API.Controllers
     [ApiController]
     public class ProductController : ParentController
     {
+        private readonly IProductRepository _repository;
+        public ProductController(IProductRepository productRepository)
+        {
+            _repository = productRepository;
+        }
+        //public ProductController(IServiceProvider serviceProvider) : base(serviceProvider)
+        //{
+
+        //}
+
         #region View
         // GET: api/<UserController>
         [HttpGet("List")]
-        public async Task<IActionResult> GetList([FromQuery] int? id, string? code, string? name)
+        public IActionResult GetList([FromQuery] SearchProductRequest dto)
         {
             try
             {
-                var data = (await _processor.GetListProduct()).Where(x=>
-                            (id == null || x.ID == id) && 
-                            (string.IsNullOrEmpty(code?.Trim()) || x.ProductCode?.Trim().ToLower() == code.Trim().ToLower()) &&
-                            (string.IsNullOrEmpty(name?.Trim()) || x.Name?.ToLower() == name.Trim().ToLower())
-                           ).ToList();
+                var data = _repository.GetListProduct(dto);
                 return Ok(data);
             }
             catch (System.Exception ex)
@@ -48,11 +55,16 @@ namespace PORECT.API.Controllers
         ///     }
         /// </remarks>
         [HttpPost("Submit")]
-        public async Task<IActionResult> Submit([FromBody] ProductRequest data)
+        public IActionResult Submit([FromBody] ProductRequest data)
         {
             try
             {
-                var result = await _processor.SubmitProduct(data);
+                if (data == null)
+                {
+                    return BadRequest("Parameter is empty!");
+                }
+
+                var result = _repository.SubmitProduct(data);
                 return Ok(result);
             }
             catch (System.Exception ex)

@@ -9,7 +9,7 @@ namespace Tes.Data
     public class TesDataAccessControl
     {
         #region View
-        public async Task<List<MsUserResponse>> GetListUserAsync()
+        public async Task<List<MsUserResponse>> GetListUserAsync(int? id = null, string? username = null)
         {
             using (var context = new DataContext())
             {
@@ -18,7 +18,10 @@ namespace Tes.Data
 
                 try
                 {
-                    var result = await context.MsUsers.Select(x => new MsUserResponse
+                    var result = await context.MsUsers.Where(x =>
+                        (id == null || x.Id == id) &&
+                        (string.IsNullOrEmpty(username) || x.Username.ToLower() == username.ToLower().Trim()))
+                    .Select(x => new MsUserResponse
                     {
                         ID = x.Id,
                         Username = x.Username,
@@ -39,7 +42,7 @@ namespace Tes.Data
                 }
             }
         }
-        public async Task<List<ProductResponse>> GetListProductAsync()
+        public async Task<List<ProductResponse>> GetListProductAsync(SearchProductRequest dto)
         {
             using (var context = new DataContext())
             {
@@ -48,7 +51,17 @@ namespace Tes.Data
 
                 try
                 {
-                    var result = await context.Products.Select(x => new ProductResponse
+                    var result = await context.Products.Where(x =>
+                                (dto.ID == null || x.Id == dto.ID) &&
+                                (string.IsNullOrEmpty(dto.Code) || x.ProductCode.Trim().ToLower() == dto.Code.Trim().ToLower()) &&
+                                (string.IsNullOrEmpty(dto.Name) || x.Name.ToLower().Contains(dto.Name.Trim().ToLower())) &&
+                                ((dto.PriceFrom == null && dto.PriceTo == null) ||
+                                 (dto.PriceFrom != null && dto.PriceTo == null && dto.PriceFrom <= x.Price) ||
+                                 (dto.PriceFrom == null && dto.PriceTo != null && x.Price <= dto.PriceTo) ||
+                                 (dto.PriceFrom != null && dto.PriceTo != null &&
+                                  dto.PriceFrom <= x.Price && x.Price <= dto.PriceTo)
+                                ))
+                    .Select(x => new ProductResponse
                     {
                         ID = x.Id,
                         ProductCode = x.ProductCode,

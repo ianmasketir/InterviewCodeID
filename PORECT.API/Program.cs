@@ -4,6 +4,8 @@ using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using PORECT.API.Services;
 using Microsoft.OpenApi.Models;
+using PORECT.API;
+using Tes.Business;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -78,6 +80,9 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
         };
     });
 builder.Services.AddSingleton<JwtTokenService>();
+builder.Services.AddSingleton<IWeatherService, WeatherService>();
+builder.Services.AddTransient<IUserRepository, UserProcessor>();
+builder.Services.AddTransient<IProductRepository, ProductProcessor>();
 
 builder.Services.AddAuthorization();
 builder.Services.AddMvc().AddJsonOptions(options => options.JsonSerializerOptions.PropertyNamingPolicy = null);

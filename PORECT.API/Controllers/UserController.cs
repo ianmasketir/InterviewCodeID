@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using PORECT.Helper;
+using Tes.Business;
 using Tes.Domain;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -12,18 +13,25 @@ namespace PORECT.API.Controllers
     [ApiController]
     public class UserController : ParentController
     {
+        private readonly IUserRepository _repository;
+        public UserController(IUserRepository userRepository)
+        {
+            _repository = userRepository;
+        }
+        //public UserController(IServiceProvider serviceProvider) : base(serviceProvider)
+        //{
+
+        //}
+
         #region View
         // GET: api/<UserController>
         [HttpGet]
         [Route("List")]
-        public async Task<IActionResult> GetList([FromQuery] int? id, string? username)
+        public IActionResult GetList([FromQuery] int? id = null, string? username = null)
         {
             try
             {
-                var data = (await _processor.GetListUser()).Where(x=>
-                            (id == null || x.ID == id) && 
-                            (string.IsNullOrEmpty(username?.Trim()) || x.Username?.Trim().ToLower() == username.Trim().ToLower())
-                           ).ToList();
+                var data = _repository.GetListUser(id, username);
                 return Ok(data);
             }
             catch (System.Exception ex)
@@ -52,11 +60,16 @@ namespace PORECT.API.Controllers
         [HttpPost]
         [Route("Submit")]
         [ProducesResponseType(typeof(TransactionResponse), (int)HttpStatusCode.OK)]
-        public async Task<IActionResult> Submit([FromBody] MsUserRequest data)
+        public IActionResult Submit([FromBody] MsUserRequest data)
         {
             try
             {
-                var result = await _processor.SubmitUser(data);
+                if(data == null)
+                {
+                    return BadRequest("Parameter is empty!");
+                }
+
+                var result = _repository.SubmitUser(data);
                 return Ok(result);
             }
             catch (System.Exception ex)

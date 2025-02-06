@@ -20,7 +20,6 @@ namespace PORECT.API.Services
         {
             var jwtSettings = _config.GetSection("JwtSettings");
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings["Key"]));
-            //var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(authKey));
             var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
             var claims = new[]

@@ -27,6 +27,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tes.Domain", "..\Tes.Domain
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tes.Business", "..\Tes.Business\Tes.Business.csproj", "{42E21FF3-F465-4463-B92A-6FDE89F6C6AA}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "7. Console", "7. Console", "{8FA4F56F-6F72-4B61-8D7E-F1C54BF69B46}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PORECT.TestUnit", "..\PORECT.TestUnit\PORECT.TestUnit.csproj", "{1812A096-8C76-4268-865E-F94DD4EA667D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -57,6 +61,10 @@ Global
 		{42E21FF3-F465-4463-B92A-6FDE89F6C6AA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{42E21FF3-F465-4463-B92A-6FDE89F6C6AA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{42E21FF3-F465-4463-B92A-6FDE89F6C6AA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1812A096-8C76-4268-865E-F94DD4EA667D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1812A096-8C76-4268-865E-F94DD4EA667D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1812A096-8C76-4268-865E-F94DD4EA667D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1812A096-8C76-4268-865E-F94DD4EA667D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -68,6 +76,7 @@ Global
 		{D03F4228-F8AC-412B-836A-27C6A321AE34} = {3B47B412-058C-4AD6-9026-21FE420B683C}
 		{70F63B8A-A9BD-421F-8FC8-713A9A9510DD} = {B1BD5321-2CE2-4374-B59A-540E9DE72EAE}
 		{42E21FF3-F465-4463-B92A-6FDE89F6C6AA} = {5BB74F80-54B4-441C-81A8-E679A80C0FA3}
+		{1812A096-8C76-4268-865E-F94DD4EA667D} = {8FA4F56F-6F72-4B61-8D7E-F1C54BF69B46}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {26AD7151-C9A1-4960-BF23-38D1BDF7F6F5}

@@ -64,7 +64,7 @@ namespace PORECT.Controllers
                 {
                     new ParamTaskViewModel
                     {
-                        colName = "id",
+                        colName = "ID",
                         value = (data.ID ?? -1).ToString()
                     }
                 };
