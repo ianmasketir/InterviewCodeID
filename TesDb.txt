@@ -1,0 +1,123 @@
+USE [Tes]
+GO
+/****** Object:  Table [dbo].[ms_role]    Script Date: 3/27/2025 12:14:34 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[ms_role](
+	[ID] [int] IDENTITY(1,1) NOT NULL,
+	[Role] [nvarchar](10) NOT NULL,
+	[Description] [nvarchar](50) NULL,
+	[IsActive] [bit] NOT NULL,
+	[CreatedBy] [nvarchar](50) NOT NULL,
+	[CreatedDtm] [datetime] NOT NULL,
+	[UpdatedBy] [nvarchar](50) NULL,
+	[UpdatedDtm] [datetime] NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[ID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[ms_user]    Script Date: 3/27/2025 12:14:34 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[ms_user](
+	[ID] [int] IDENTITY(1,1) NOT NULL,
+	[Username] [varchar](10) NOT NULL,
+	[Password] [text] NOT NULL,
+	[FirstName] [varchar](100) NOT NULL,
+	[LastName] [varchar](100) NULL,
+	[IsActive] [bit] NOT NULL,
+	[CreatedBy] [varchar](50) NOT NULL,
+	[CreatedDtm] [datetime] NOT NULL,
+	[UpdatedBy] [varchar](50) NULL,
+	[UpdatedDtm] [datetime] NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[ID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[product]    Script Date: 3/27/2025 12:14:34 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[product](
+	[ID] [int] IDENTITY(1,1) NOT NULL,
+	[ProductCode] [varchar](10) NOT NULL,
+	[Name] [varchar](100) NOT NULL,
+	[Description] [varchar](200) NULL,
+	[Price] [decimal](18, 2) NOT NULL,
+	[CreatedBy] [varchar](50) NOT NULL,
+	[CreatedDtm] [datetime] NOT NULL,
+	[UpdatedBy] [varchar](50) NULL,
+	[UpdatedDtm] [datetime] NULL,
+ CONSTRAINT [PK__product__3214EC27FC060943] PRIMARY KEY CLUSTERED 
+(
+	[ID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[user_role]    Script Date: 3/27/2025 12:14:34 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[user_role](
+	[ID] [int] IDENTITY(1,1) NOT NULL,
+	[Username] [nvarchar](50) NOT NULL,
+	[Role] [nvarchar](10) NOT NULL,
+	[IsActive] [bit] NOT NULL,
+	[CreatedBy] [nvarchar](50) NOT NULL,
+	[CreatedDtm] [datetime] NOT NULL,
+	[UpdatedBy] [nvarchar](50) NULL,
+	[UpdatedDtm] [datetime] NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[ID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+SET IDENTITY_INSERT [dbo].[ms_user] ON 
+GO
+INSERT [dbo].[ms_user] ([ID], [Username], [Password], [FirstName], [LastName], [IsActive], [CreatedBy], [CreatedDtm], [UpdatedBy], [UpdatedDtm]) VALUES (1, N'vtaufiq', N'1cf6JcJsWWEsY2F8uOcVG/WWS53eAP+pD6rzosyxkgc=', N'vendor', N'taufiq', 1, N'System', CAST(N'2025-02-06T23:14:27.817' AS DateTime), NULL, NULL)
+GO
+SET IDENTITY_INSERT [dbo].[ms_user] OFF
+GO
+SET IDENTITY_INSERT [dbo].[product] ON 
+GO
+INSERT [dbo].[product] ([ID], [ProductCode], [Name], [Description], [Price], [CreatedBy], [CreatedDtm], [UpdatedBy], [UpdatedDtm]) VALUES (1, N'TES-001', N'Tes 1', N'lala', CAST(2500.00 AS Decimal(18, 2)), N'system', CAST(N'2025-02-06T15:18:49.970' AS DateTime), NULL, NULL)
+GO
+INSERT [dbo].[product] ([ID], [ProductCode], [Name], [Description], [Price], [CreatedBy], [CreatedDtm], [UpdatedBy], [UpdatedDtm]) VALUES (2, N'TES-002', N'Tes 2', N'yeye', CAST(500.00 AS Decimal(18, 2)), N'system', CAST(N'2025-02-06T15:19:16.470' AS DateTime), NULL, NULL)
+GO
+INSERT [dbo].[product] ([ID], [ProductCode], [Name], [Description], [Price], [CreatedBy], [CreatedDtm], [UpdatedBy], [UpdatedDtm]) VALUES (3, N'TES-003', N'Tes 3', N'jaja', CAST(4200.00 AS Decimal(18, 2)), N'system', CAST(N'2025-02-06T15:19:38.363' AS DateTime), NULL, NULL)
+GO
+SET IDENTITY_INSERT [dbo].[product] OFF
+GO
+ALTER TABLE [dbo].[ms_role] ADD  DEFAULT ((1)) FOR [IsActive]
+GO
+ALTER TABLE [dbo].[ms_role] ADD  DEFAULT ('System') FOR [CreatedBy]
+GO
+ALTER TABLE [dbo].[ms_role] ADD  DEFAULT (getdate()) FOR [CreatedDtm]
+GO
+ALTER TABLE [dbo].[ms_user] ADD  DEFAULT ((1)) FOR [IsActive]
+GO
+ALTER TABLE [dbo].[ms_user] ADD  DEFAULT ('System') FOR [CreatedBy]
+GO
+ALTER TABLE [dbo].[ms_user] ADD  DEFAULT (getdate()) FOR [CreatedDtm]
+GO
+ALTER TABLE [dbo].[product] ADD  CONSTRAINT [DF__product__Created__3F466844]  DEFAULT ('System') FOR [CreatedBy]
+GO
+ALTER TABLE [dbo].[product] ADD  CONSTRAINT [DF__product__Created__403A8C7D]  DEFAULT (getdate()) FOR [CreatedDtm]
+GO
+ALTER TABLE [dbo].[user_role] ADD  DEFAULT ((1)) FOR [IsActive]
+GO
+ALTER TABLE [dbo].[user_role] ADD  DEFAULT ('System') FOR [CreatedBy]
+GO
+ALTER TABLE [dbo].[user_role] ADD  DEFAULT (getdate()) FOR [CreatedDtm]
+GO
